@@ -17,6 +17,24 @@ public class japMain {
 
         try {
 
+            Member member1 = new Member(150L, "A");
+            Member member2 = new Member(160L, "B");
+
+            //em.persist(member1);
+            //em.persist(member2);
+
+            System.out.println("=============");
+
+            Member member = em.find(Member.class, 150L);
+            member.setName("ABCD");
+
+            //em.persist(member); persist 를 해주지 않아도 위 코드만으로 변경을 감지하여 UPDATE문을 날린다.(Dirty Checking)
+
+            //저장
+            tx.commit();
+
+
+            /******** 23.12.19 영속성 컨텍스트 이해하기
             //비영속
             Member member = new Member();
             member.setId(101L);
@@ -26,11 +44,15 @@ public class japMain {
             System.out.println("=== BEFORE ===");
             em.persist(member); // 1차 캐시 조회
             System.out.println("=== AFTER ===");
-            
-            Member findMember = em.find(Member.class , 101L);
 
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
+            //영속
+            Member findMember1 = em.find(Member.class , 101L);
+            Member findMember2 = em.find(Member.class , 101L);
+            //영속 엔티티의 동실성 보장(결과: true)
+            System.out.println("(findMember1 == findMember2) = " + (findMember1 == findMember2));
+
+            */
+
 
             /********** 23.12.17 JPA 매커니즘 이해
             //Insert
@@ -64,8 +86,6 @@ public class japMain {
                 System.out.println("member.getName() = " + member.getName());
             }
             **********/
-
-            tx.commit();
         }catch (Exception e){
             tx.rollback();
         }finally {
