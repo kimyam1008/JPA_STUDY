@@ -17,19 +17,16 @@ public class japMain {
 
         try {
 
-            Member member1 = new Member(150L, "A");
-            Member member2 = new Member(160L, "B");
 
-            //em.persist(member1);
-            //em.persist(member2);
+            //영속
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAA");
+
+            em.close();
+
+            //em.flush();
 
             System.out.println("=============");
-
-            Member member = em.find(Member.class, 150L);
-            member.setName("ABCD");
-
-            //em.persist(member); persist 를 해주지 않아도 위 코드만으로 변경을 감지하여 UPDATE문을 날린다.(Dirty Checking)
-
             //저장
             tx.commit();
 
